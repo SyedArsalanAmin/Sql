@@ -4,9 +4,8 @@ from mysql.connector import connect
 conn = connect(user='root', passwd='1234', host='127.0.0.1', db='arsalan_database')
 mycursor = conn.cursor()
 
-
-pd.read_sql("Select * from table1", conn)
-
+dataframe = pd.read_sql("Select * from table1", conn)
+dataframe.reset_index(drop=True).drop(columns="id")
 
 mycursor.execute(
     "INSERT INTO table1 (id, first_name,	last_name,	salary) VALUES (170,'sultan', 'tipu', 170)")
@@ -15,7 +14,9 @@ conn.commit()
 # TODO: Using the Where statement
 
 mycursor.execute("select * from table1 where salary >= %s",
-                 (40,))  # thid %s will prevent sq injection
+                 (40,))  # thid %s will prevent sql injection
+
+
 result = mycursor.fetchall()
 
 for i in result:
